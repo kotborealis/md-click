@@ -21,6 +21,13 @@ md_base_template = """# {command_name}
 """
 
 
+def trim_trailing_spaces(data: str):
+    """
+    Trim trailing whitespaces from text.
+    """
+    return '\n'.join(line.rstrip() for line in data.splitlines())
+
+
 def trim_empty_lines(data: str):
     """
     Remove empty lines from start and end of text.
@@ -44,8 +51,6 @@ def trim_docstring(data):
              which will be removed by this function.
     """
     lines = trim_empty_lines(data).splitlines()
-
-    print(lines)
 
     common_indentation = min([
         len(list(itertools.takewhile(
@@ -134,7 +139,7 @@ def dump_helper(base_command, docs_dir):
 
         # Create the file per each command
         with open(md_file_path, 'w', encoding='utf-8') as md_file:
-            md_file.write(md_template)
+            md_file.write(trim_trailing_spaces(md_template))
 
 
 @click.group()
